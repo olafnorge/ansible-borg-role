@@ -1,0 +1,337 @@
+---
+borg_olafnorge_de_compose:
+  version: "3.7"
+  services:
+    borg:
+      deploy:
+        labels: "{{ borg_olafnorge_de_labels }}"
+        placement:
+          constraints:
+            - node.role != manager
+        mode: global
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+          window: 300s
+        update_config:
+          failure_action: rollback
+          monitor: 120s
+      environment:
+        - APP_NAME={{ borg_olafnorge_de_environment.app_name | default('Borg') }}
+        - APP_DEBUG={{ borg_olafnorge_de_environment.app_debug | default('false') }}
+        - APP_ENV={{ borg_olafnorge_de_environment.app_env | default('development') }}
+        - APP_FORCE_SCHEME={{ borg_olafnorge_de_environment.app_force_scheme | default('http') }}
+        - APP_HOST={{ borg_olafnorge_de_environment.app_host | default('borg.example.com') }}
+        - APP_KEY={{ borg_olafnorge_de_environment.app_key }}
+        - APP_TIMEZONE={{ borg_olafnorge_de_environment.app_timezone | default('Europe/Berlin') }}
+        - APP_URL={{ borg_olafnorge_de_environment.app_url | default('http://borg.example.com') }}
+        - AWS_BUCKET={{ borg_olafnorge_de_environment.aws_bucket | default('null') }}
+        - AWS_KEY={{ borg_olafnorge_de_environment.aws_key | default('null') }}
+        - AWS_REGION={{ borg_olafnorge_de_environment.aws_region | default('null') }}
+        - AWS_SECRET={{ borg_olafnorge_de_environment.aws_secret | default('null') }}
+        - BORG_CACHE_STORE={{ borg_olafnorge_de_environment.borg_cache_store | default('database') }}
+        - BORG_LOG_LEVEL={{ borg_olafnorge_de_environment.borg_log_level | default('error') }}
+        - BORG_RELOCATED_REPO_ACCESS_IS_OK={{ borg_olafnorge_de_environment.borg_relocated_repo_access_is_ok | default('no') }}
+        - BORG_SCHEDULER_ENABLED={{ borg_olafnorge_de_environment.borg_scheduler_enabled | default('false') }}
+        - BORG_STORAGE_PATH={{ borg_olafnorge_de_environment.borg_storage_path | default('null') }}
+        - BORG_WAIT_FOR_LOCK={{ borg_olafnorge_de_environment.borg_wait_for_lock | default('60') }}
+        - BROADCAST_DRIVER={{ borg_olafnorge_de_environment.broadcast_driver | default('null') }}
+        - BROADCAST_REDIS_CONNECTION={{ borg_olafnorge_de_environment.broadcast_redis_connection | default('default') }}
+        - CACHE_DATABASE_CONNECTION={{ borg_olafnorge_de_environment.cache_database_connection | default('null') }}
+        - CACHE_DATABASE_TABLE={{ borg_olafnorge_de_environment.cache_database_table | default('cache') }}
+        - CACHE_DRIVER={{ borg_olafnorge_de_environment.cache_driver | default('file') }}
+        - CACHE_PREFIX={{ borg_olafnorge_de_environment.cache_prefix | default('borg') }}
+        - CACHE_REDIS_CONNECTION={{ borg_olafnorge_de_environment.cache_redis_connection | default('default') }}
+        - DB_CHARSET={{ borg_olafnorge_de_environment.db_charset | default('utf8mb4') }}
+        - DB_COLLATION={{ borg_olafnorge_de_environment.db_collation | default('utf8mb4_unicode_ci') }}
+        - DB_CONNECTION={{ borg_olafnorge_de_environment.db_connection | default('mysql') }}
+        - DB_DATABASE={{ borg_olafnorge_de_environment.db_database | default('borg') }}
+        - DB_HOST={{ borg_olafnorge_de_environment.db_host | default('database') }}
+        - DB_PASSWORD={{ borg_olafnorge_de_environment.db_password }}
+        - DB_PORT={{ borg_olafnorge_de_environment.db_port | default('3306') }}
+        - DB_PREFIX={{ borg_olafnorge_de_environment.db_prefix | default('') }}
+        - DB_SCHEMA={{ borg_olafnorge_de_environment.db_schema | default('public') }}
+        - DB_STRICT_MODE={{ borg_olafnorge_de_environment.db_strict_mode | default('false') }}
+        - DB_TIMEZONE={{ borg_olafnorge_de_environment.db_timezone | default('+00:00') }}
+        - DB_USERNAME={{ borg_olafnorge_de_environment.db_username | default('borg') }}
+        - FILESYSTEM_CLOUD={{ borg_olafnorge_de_environment.filesystem_cloud | default('s3') }}
+        - FILESYSTEM_DRIVER={{ borg_olafnorge_de_environment.filesystem_driver | default('local') }}
+        - HORIZON_NOTIFICATION_EMAIL={{ borg_olafnorge_de_environment.horizon_notification_email | default('user@example.com') }}
+        - HORIZON_DASHBOARD_ENABLED={{ borg_olafnorge_de_environment.horizon_dashboard_enabled | default('false') }}
+        - HORIZON_PROCESSES={{ borg_olafnorge_de_environment.horizon_processes | default('5') }}
+        - HORIZON_TIMEOUT={{ borg_olafnorge_de_environment.horizon_timeout | default('60') }}
+        - HORIZON_TRIES={{ borg_olafnorge_de_environment.horizon_tries | default('3') }}
+        - HORIZON_MEMORY_LIMIT={{ borg_olafnorge_de_environment.horizon_memory_limit | default('64') }}
+        - LOCK_DRIVER={{ borg_olafnorge_de_environment.lock_driver | default('semaphore') }}
+        - LOCK_REDIS_CONNECTION={{ borg_olafnorge_de_environment.lock_redis_connection | default('default') }}
+        - LOG_LEVEL={{ borg_olafnorge_de_environment.log_level | default('debug') }}
+        - LOG_STACK_CHANNELS={{ borg_olafnorge_de_environment.log_stack_channels | default('[]') | join(',') }}
+        - LOG_CHANNEL={{ borg_olafnorge_de_environment.log_channel | default('stack') }}
+        - MAIL_DRIVER={{ borg_olafnorge_de_environment.mail_driver | default('smtp') }}
+        - MAIL_ENCRYPTION={{ borg_olafnorge_de_environment.mail_encryption | default('false') }}
+        - MAIL_FROM_ADDRESS={{ borg_olafnorge_de_environment.mail_from_address | default('noreply@borg.example.com') }}
+        - MAIL_FROM_NAME={{ borg_olafnorge_de_environment.mail_from_name | default('Borg') }}
+        - MAIL_HOST={{ borg_olafnorge_de_environment.mail_host | default('localhost') }}
+        - MAIL_PASSWORD={{ borg_olafnorge_de_environment.mail_password | default('null') }}
+        - MAIL_PORT={{ borg_olafnorge_de_environment.mail_port | default('1025') }}
+        - MAIL_USERNAME={{ borg_olafnorge_de_environment.mail_username | default('null') }}
+        - MAILGUN_DOMAIN={{ borg_olafnorge_de_environment.mailgun_domain | default('null') }}
+        - MAILGUN_SECRET={{ borg_olafnorge_de_environment.mailgun_secret | default('null') }}
+        - MEMCACHED_HOST={{ borg_olafnorge_de_environment.memcached_host | default('127.0.0.1') }}
+        - MEMCACHED_PASSWORD={{ borg_olafnorge_de_environment.memcached_password | default('null') }}
+        - MEMCACHED_PERSISTENT_ID={{ borg_olafnorge_de_environment.memcached_persistent_id | default('null') }}
+        - MEMCACHED_PORT={{ borg_olafnorge_de_environment.memcached_port | default('11211') }}
+        - MEMCACHED_USERNAME={{ borg_olafnorge_de_environment.memcached_username | default('null') }}
+        - OAUTH_CLIENT_ID={{ borg_olafnorge_de_environment.oauth_client_id | default('null') }}
+        - OAUTH_CLIENT_SECRET={{ borg_olafnorge_de_environment.oauth_client_secret | default('null') }}
+        - OAUTH_REDIRECT={{ borg_olafnorge_de_environment.oauth_redirect | default('https://borg.example.com/auth/redirect') }}
+        - PUSHER_APP_ID={{ borg_olafnorge_de_environment.pusher_app_id | default('null') }}
+        - PUSHER_KEY={{ borg_olafnorge_de_environment.pusher_key | default('null') }}
+        - PUSHER_SECRET={{ borg_olafnorge_de_environment.pusher_secret | default('null') }}
+        - QUEUE_CONNECTION={{ borg_olafnorge_de_environment.queue_connection | default('sync') }}
+        - QUEUE_FAILED_TABLE={{ borg_olafnorge_de_environment.queue_failed_table | default('failed_jobs') }}
+        - QUEUE_REDIS_CONNECTION={{ borg_olafnorge_de_environment.queue_redis_connection | default('default') }}
+        - REDIS_CLIENT={{ borg_olafnorge_de_environment.redis_client | default('predis') }}
+        - REDIS_CLUSTER={{ borg_olafnorge_de_environment.redis_cluster | default('false') }}
+        - REDIS_DATABASE={{ borg_olafnorge_de_environment.redis_database | default('0') }}
+        - REDIS_HOST={{ borg_olafnorge_de_environment.redis_host | default('redis') }}
+        - REDIS_PASSWORD={{ borg_olafnorge_de_environment.redis_password | default('null') }}
+        - REDIS_PORT={{ borg_olafnorge_de_environment.redis_port | default('6379') }}
+        - ROLLBAR_BRANCH={{ borg_olafnorge_de_environment.rollbar_branch | default('master') }}
+        - ROLLBAR_CODE_VERSION={{ borg_olafnorge_de_environment.rollbar_code_version | default('master') }}
+        - ROLLBAR_ENABLED={{ borg_olafnorge_de_environment.rollbar_enabled | default('false') }}
+        - ROLLBAR_ENVIRONMENT={{ borg_olafnorge_de_environment.app_env | default('development') }}
+        - ROLLBAR_HOST={{ borg_olafnorge_de_environment.app_host | default('borg.example.com') }}
+        - ROLLBAR_LEVEL={{ borg_olafnorge_de_environment.log_level | default('debug') }}
+        - ROLLBAR_TOKEN={{ borg_olafnorge_de_environment.rollbar_token | default('' | hash('md5')) }}
+        - SES_KEY={{ borg_olafnorge_de_environment.ses_key | default('null') }}
+        - SES_SECRET={{ borg_olafnorge_de_environment.ses_secret | default('null') }}
+        - SESSION_DOMAIN={{ borg_olafnorge_de_environment.session_domain | default('borg.example.com') }}
+        - SESSION_DRIVER={{ borg_olafnorge_de_environment.session_driver | default('file') }}
+        - SESSION_SECURE_COOKIE={{ borg_olafnorge_de_environment.session_secure_cookie | default('false') }}
+        - SPARKPOST_SECRET={{ borg_olafnorge_de_environment.sparkpost_secret | default('null') }}
+        - SQS_SECRET_KEY={{ borg_olafnorge_de_environment.sqs_secret_key | default('') }}
+        - STRIPE_KEY={{ borg_olafnorge_de_environment.stripe_key | default('null') }}
+        - STRIPE_SECRET={{ borg_olafnorge_de_environment.stripe_secret | default('null') }}
+        - TRUSTED_PROXIES={{ borg_olafnorge_de_environment.trusted_proxies | default('null') }}
+      image: "olafnorge/borg:{{ borg_olafnorge_de_version }}"
+      networks: "{{ borg_olafnorge_de_networks }}"
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+    database:
+      deploy:
+        placement:
+          constraints:
+            - node.role != manager
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+          window: 300s
+        update_config:
+          failure_action: rollback
+          monitor: 120s
+      environment:
+        - MYSQL_DATABASE={{ borg_olafnorge_de_environment.db_database | default('borg') }}
+        - MYSQL_USER={{ borg_olafnorge_de_environment.db_username | default('borg') }}
+        - MYSQL_PASSWORD{{ '_FILE' if borg_olafnorge_de_use_secrets else '' }}={{ '/run/secrets/' if borg_olafnorge_de_use_secrets else '' }}{{ borg_olafnorge_de_environment.db_password | default('') }}
+        - MYSQL_ROOT_PASSWORD{{ '_FILE' if borg_olafnorge_de_use_secrets else '' }}={{ '/run/secrets/' if borg_olafnorge_de_use_secrets else '' }}{{ borg_olafnorge_de_environment.db_root_password | default('') }}
+      image: mysql:5.7
+      networks:
+        - "{{ borg_olafnorge_de_network_internal }}"
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+    redis:
+      deploy:
+        placement:
+          constraints:
+            - node.role != manager
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+          window: 300s
+        update_config:
+          failure_action: rollback
+          monitor: 120s
+      image: redis:4-alpine
+      networks:
+        - "{{ borg_olafnorge_de_network_internal }}"
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+    xtrabackup:
+      command: cron -f -l -L15
+      configs:
+        - source: "borg-crontab-{{ borg_olafnorge_de_crontab_templated.checksum[:10] }}"
+          target: /etc/cron.d/crontab
+          uid: '0'
+          gid: '0'
+          mode: 0644
+      deploy:
+        placement:
+          constraints:
+            - node.role != manager
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+          window: 300s
+        update_config:
+          failure_action: rollback
+          monitor: 120s
+      image: olafnorge/xtrabackup:2.4
+      networks:
+        - "{{ borg_olafnorge_de_network_internal }}"
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+  networks: "{{ borg_olafnorge_de_network_definitions }}"
+  configs: "{{ borg_olafnorge_de_configs_dict }}"
+
+borg_olafnorge_de_crontab_path: "/root/{{ borg_olafnorge_de_name }}-crontab"
+borg_olafnorge_de_labels: []
+borg_olafnorge_de_crons:
+  - interval: '* * * * *'
+    user: root
+    command: echo 'every minute'
+borg_olafnorge_de_name: borgolafnorgede
+borg_olafnorge_de_network_definitions: []
+borg_olafnorge_de_network_internal: internal
+borg_olafnorge_de_networks:
+  - "{{ borg_olafnorge_de_network_internal }}"
+borg_olafnorge_de_use_secrets: yes
+borg_olafnorge_de_version: latest
+
+borg_olafnorge_de_environment:
+  app_name: Borg
+  app_debug: "false"
+  app_env: production
+  app_force_scheme: https
+  app_host: borg.example.com
+  app_key: "{{ borg_olafnorge_de_secrets.app_key.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_app_key }}"
+  app_timezone: Europe/Berlin
+  app_url: https://borg.example.com
+  aws_bucket: "null"
+  aws_key: "null"
+  aws_region: "null"
+  aws_secret: "null"
+  borg_cache_store: database
+  borg_log_level: error
+  borg_relocated_repo_access_is_ok: "no"
+  borg_storage_path: "null"
+  borg_scheduler_enabled: "true"
+  borg_wait_for_lock: 60
+  broadcast_driver: "null"
+  broadcast_redis_connection: default
+  cache_database_connection: "null"
+  cache_database_table: cache
+  cache_driver: redis
+  cache_prefix: borg
+  cache_redis_connection: default
+  db_charset: utf8mb4
+  db_collation: utf8mb4_unicode_ci
+  db_connection: mysql
+  db_database: borg
+  db_host: database
+  db_password: "{{ borg_olafnorge_de_secrets.db_password.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_db_password }}"
+  db_port: 3306
+  db_prefix: ""
+  db_root_password: "{{ borg_olafnorge_de_secrets.db_root_password.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_db_root_password }}"
+  db_schema: public
+  db_strict_mode: "false"
+  db_timezone: "+00:00"
+  db_username: borg
+  filesystem_cloud: s3
+  filesystem_driver: local
+  horizon_notification_email: user@example.com
+  horizon_dashboard_enabled: "true"
+  horizon_processes: 5
+  horizon_timeout: 60
+  horizon_tries: 3
+  horizon_memory_limit: 128
+  lock_driver: redis
+  lock_redis_connection: default
+  log_channel: stack
+  log_level: error
+  log_stack_channels:
+    - errorlog
+    - rollbar
+  mail_driver: smtp
+  mail_encryption: tls
+  mail_from_address: borg@example.com
+  mail_from_name: Borg
+  mail_host: webmail.example.com
+  mail_password: "{{ borg_olafnorge_de_secrets.mail_password.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_mail_password }}"
+  mail_port: 587
+  mail_username: borg@example.com
+  mailgun_domain: "null"
+  mailgun_secret: "null"
+  memcached_host: 127.0.0.1
+  memcached_password: "null"
+  memcached_persistent_id: "null"
+  memcached_port: 11211
+  memcached_username: "null"
+  oauth_client_id:
+  oauth_client_secret: "{{ borg_olafnorge_de_secrets.oauth_client_secret.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_oauth_client_secret }}"
+  oauth_redirect: https://borg.example.com/auth/callback
+  pusher_app_id: "null"
+  pusher_key: "null"
+  pusher_secret: "null"
+  queue_connection: redis
+  queue_failed_table: failed_jobs
+  queue_redis_connection: default
+  redis_client: phpredis
+  redis_cluster: "false"
+  redis_database: 0
+  redis_host: "redis"
+  redis_password: "null"
+  redis_port: 6379
+  rollbar_branch: "{{ borg_olafnorge_de_version }}"
+  rollbar_code_version: "{{ borg_olafnorge_de_version }}"
+  rollbar_enabled: "true"
+  rollbar_token: "{{ borg_olafnorge_de_secrets.rollbar_token.name if borg_olafnorge_de_use_secrets else borg_olafnorge_de_rollbar_token }}"
+  ses_key: "null"
+  ses_secret: "null"
+  session_domain: borg.example.com
+  session_driver: redis
+  session_secure_cookie: "true"
+  sparkpost_secret: "null"
+  sqs_secret_key: ""
+  stripe_key: "null"
+  stripe_secret: "null"
+  trusted_proxies: 10.0.0.0/8
+
+borg_olafnorge_de_secrets:
+  app_key:
+    data: "{{ borg_olafnorge_de_app_key }}"
+    name: borg_olafnorge_de_app_key
+  db_password:
+    data: "{{ borg_olafnorge_de_db_password }}"
+    name: borg_olafnorge_de_db_password
+  db_root_password:
+    data: "{{ borg_olafnorge_de_db_root_password }}"
+    name: borg_olafnorge_de_db_root_password
+  mail_password:
+    data: "{{ borg_olafnorge_de_mail_password }}"
+    name: borg_olafnorge_de_mail_password
+  oauth_client_secret:
+    data: "{{ borg_olafnorge_de_oauth_client_secret }}"
+    name: borg_olafnorge_de_oauth_client_secret
+  rollbar_token:
+    data: "{{ borg_olafnorge_de_rollbar_token }}"
+    name: borg_olafnorge_de_rollbar_token
+
+# vaults, you may define them in a separate file which overrides these defaults
+borg_olafnorge_de_app_key: # FIXME: add your vault here using 'ansible-vault'
+borg_olafnorge_de_db_password: # FIXME: add your vault here using 'ansible-vault'
+borg_olafnorge_de_db_root_password: # FIXME: add your vault here using 'ansible-vault'
+borg_olafnorge_de_mail_password: # FIXME: add your vault here using 'ansible-vault'
+borg_olafnorge_de_oauth_client_secret:# FIXME: add your vault here using 'ansible-vault'
+borg_olafnorge_de_rollbar_token: # FIXME: add your vault here using 'ansible-vault'
